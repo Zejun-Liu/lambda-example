@@ -76,14 +76,8 @@ public class LambdaTest {
 
     @Test
     public void reduceTest() {
-        Optional<Order> reduce = orders.stream().reduce((order1, order2) -> {
-            if (order1.getQty() > order2.getQty()) {
-                return order1;
-            } else {
-                return order2;
-            }
-        });
-        reduce.ifPresent(System.out::println);
+        Optional<Order> reduce4 = orders.stream().reduce((o1, o2) -> o1.getQty() > o2.getQty() ? o1 : o2);
+        reduce4.ifPresent(System.out::println);
 
         Optional<Integer> reduce1 = orders.stream().map(Order::getQty).reduce((sum, item) -> sum + item);
         reduce1.ifPresent(System.out::println);
@@ -97,6 +91,56 @@ public class LambdaTest {
 
     @Test
     public void collectTest() {
+        Map<String, Order> orderIdMap = orders.stream().collect(Collectors.toMap(Order::getUserId, v -> v));
+        System.out.println(orderIdMap);
+
+        Map<String, String> orderIdUserIdMap = orders.stream().collect(Collectors.toMap(Order::getId, Order::getUserId));
+        System.out.println(orderIdUserIdMap);
+
+        Map<String, Order> userIdMap = orders.stream().collect(Collectors.toMap(Order::getUserId, v -> v, (k1, k2) -> k1));
+        System.out.println(userIdMap);
+
+        Map<String, List<Order>> userIdOrdersMap = orders.stream().collect(Collectors.groupingBy(Order::getUserId));
+        System.out.println(userIdOrdersMap);
+
+        Map<String, Optional<BigDecimal>> userIdAmountMap = userIdOrdersMap.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        v -> v.getValue().stream().map(Order::getAmount).reduce(BigDecimal::add)));
+        System.out.println(userIdAmountMap);
+
+        Map<String, BigDecimal> userIdAmountMap2 = userIdOrdersMap.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        v -> v.getValue().stream().map(Order::getAmount)
+                                .reduce(BigDecimal::add)
+                                .orElse(BigDecimal.ZERO)));
+        System.out.println(userIdAmountMap2);
+
+        Map<String, LongSummaryStatistics> collect = userIdOrdersMap.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        v -> v.getValue().stream().collect(Collectors.summarizingLong(Order::getQty))));
+
+        System.out.println(collect);
+
+
+        //1. 查找最大最小值
+        //maxBy(Comparator)
+        //minBy(Comparator)
+
+        //求和:
+        //summingInt(XX::getX)
+        //summingLong(XX::getX)
+        //summingDouble(XX::getX)
+        //求平均值:
+        //averagingInt(XX::getX)
+        //averagingDouble(XX::getX)
+        //averagingLong(XX::getX)
+        //综合方法，和，平均，最大最小全求出来:
+        //summarizingInt(XX:getX)
+        //summarizingDouble(XX:getX)
+        //summarizingLong(XX:getX)
+
+
+
 
     }
 
