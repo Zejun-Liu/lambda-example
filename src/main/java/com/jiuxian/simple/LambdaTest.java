@@ -1,9 +1,13 @@
-package com.jiuxian;
+package com.jiuxian.simple;
 
+import com.jiuxian.entity.Order;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -47,7 +51,7 @@ public class LambdaTest {
         });
         //如果代码就一行，可以去掉括号
         orders.forEach(order -> System.out.println(order.getId()));
-
+        orders.forEach(System.out::println);
     }
 
     @Test
