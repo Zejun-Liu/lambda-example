@@ -4,10 +4,7 @@ import com.jiuxian.entity.Order;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -138,8 +135,6 @@ public class LambdaTest {
         //summarizingInt(XX:getX)
         //summarizingDouble(XX:getX)
         //summarizingLong(XX:getX)
-
-
 
 
     }
